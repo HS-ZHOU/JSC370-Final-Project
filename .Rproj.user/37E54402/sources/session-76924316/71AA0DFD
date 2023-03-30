@@ -3,7 +3,7 @@
     "path": "~/my-website/index.Rmd",
     "project_path": "index.Rmd",
     "type": "r_markdown",
-    "hash": "3396106571",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1680130362605.0,
@@ -12,8 +12,8 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "109,4",
-        "scrollLine": "4"
+        "cursorPosition": "17,14",
+        "scrollLine": "8"
     },
     "folds": "",
     "lastKnownWriteTime": 1680140073,
