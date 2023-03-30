@@ -62,7 +62,7 @@ p2_scatter <- cv_states_today_scatter %>%
 ```
 
 ```{r}
-cfr_geo <- plot_geo(cv_states_today, 
+plt3 <- plot_geo(cv_states_today, 
          locationmode = "USA-states") %>% 
   add_trace(
     z = ~naive_CFR,
@@ -72,7 +72,7 @@ cfr_geo <- plot_geo(cv_states_today,
     geo = list(
       scope = "usa",
       showlakes = TRUE,
-      lakecolor = toRGB("red")
+      lakecolor = toRGB("gray")
     )
   )
 ```
@@ -81,7 +81,7 @@ cfr_geo <- plot_geo(cv_states_today,
 cv_states_mat <- cv_states %>%  select(state, date, new_cases) %>% 
   pivot_wider(names_from = state, values_from = new_cases) %>% 
   column_to_rownames("date")
-heatmap_states <- cv_states_mat %>% 
+plt4 <- cv_states_mat %>% 
   plot_ly(
     x = rownames(cv_states_mat),
     y = colnames(cv_states_mat),
@@ -107,12 +107,12 @@ p2_scatter
 
 ### Figure 3
 ```{r echo=FALSE}
-cfr_geo
+plt3
 ```
 
 ### Figure 4
 ```{r echo=FALSE}
-heatmap_states
+plt4
 ```
 
 {-}
