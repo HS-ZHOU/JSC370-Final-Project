@@ -1,6 +1,6 @@
 ---
 title: "JSC370 Final Project"
-author: "Hongshuo Zhou"
+author: "William Zhang"
 output: 
     html_document:
         toc: TRUE
@@ -9,7 +9,7 @@ output:
 
 This is my JSC370 Final Project website.
 
-```{r load-data}
+```{r setup, message=FALSE,echo = FALSE, warning=FALSE}
 library(data.table)
 library(tidyverse)
 library(dplyr)
@@ -28,11 +28,15 @@ opts_chunk$set(
   fig.asp = 0.618,
   out.width = "700px",
   class.source = "code-r")
-
-
-source("process_COVID_data.R")
 ```
 
+## First step
+
+First I will source any necessary code, e.g. `process_covid_data.R`:
+
+```{r load-data}
+source("process_COVID_data.R")
+```
 
 ```{r}
 p1_scatter <- cv_states_today %>% 
@@ -90,6 +94,7 @@ heatmap_states <- cv_states_mat %>%
     showscale = TRUE
   )
 ```
+
 
 ## Showcasing plots {.tabset}
 
