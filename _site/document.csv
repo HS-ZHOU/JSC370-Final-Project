@@ -1,0 +1,14 @@
+ID,Variable Name,Occupational title
+1,Board Name,The name of the school board.
+2,Board City,The city of the school board in.
+3,Grade 6 EQAO Reading Results,The passing rate of the EQAO reading test.
+4,Grade 10 OSSLT Results,The passing rate of the OSSLT test.
+5,Start Year,The start year of the school year.
+6,Elementary Male Enrolment,The number of elementary school male students enrolled. 
+7,Elementary Female Enrolment,The number of elementary school female students enrolled. 
+8,Secondary Male Enrolment,The number of secondary school male students enrolled. 
+9,Secondary Female Enrolment,The number of secondary school female students enrolled. 
+10,Expulsion Rate,The expulsion rate of the school board in the year.
+11,Suspension Rate,The suspension rate of the school board in the year.
+12,Elementary Student Teacher Ratio,The ratio between elementary student and elementary full-time educators.
+13,Secondary Student Teacher Ratio,The ratio between secondary student and elementary full-time educators.

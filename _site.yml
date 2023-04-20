@@ -1,6 +1,8 @@
-name: "my-website"
+name: "JSC370 A5(Final Project)"
 navbar:
-  title: "My Website"
+  title: "JSC370 A5"
   left:
     - text: "Home"
       href: index.html
+    - text: "Lab 12 Page"
+      href: lab12.html
