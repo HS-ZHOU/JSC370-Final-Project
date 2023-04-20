@@ -583,7 +583,7 @@ plt3 <- ggplotly(plt3)
 ```{r, echo = FALSE, warning=FALSE, echo=FALSE}
 dat1$`Start Year` <- as.factor(dat1$`Start Year`)
 
-plot1 <- dat1 |>
+plt2 <- dat1 |>
   filter(`Start Year` == 2018) |>
   ggplot() +
   geom_histogram(aes(x = `Secondary Student Teacher Ratio`), fill = "orange", color = "black", bins=30) +
@@ -591,21 +591,21 @@ plot1 <- dat1 |>
        y = "Count",
        x = "Secondary Student Teacher Ratio") +
   theme_bw()
-
+plt2 <- ggplotly(plt2)
 ```
 
 ```{r, echo=FALSE, warning=FALSE, echo=FALSE}
-plot3 <- dat1 |>
-  filter(`Start Year` == 2018) |>
-  ggplot() +
-  geom_histogram(aes(x = `Elementary Student Teacher Ratio`), fill = "orange", color = "black", bins=30) +
-  labs(title = "Figure 3 - A histogram of the Elementary Student-Teacher Ratio",
-       y = "Count",
-       x = "Elementary Student Teacher Ratio") +
-  theme_bw()
-
-# grid.arrange(plot1, plot2, ncol=1)
-# plt3 <- ggplotly(plt3)
+# plot2 <- dat1 |>
+#   filter(`Start Year` == 2018) |>
+#   ggplot() +
+#   geom_histogram(aes(x = `Elementary Student Teacher Ratio`), fill = "orange", color = "black", bins=30) +
+#   labs(title = "Figure 3 - A histogram of the Elementary Student-Teacher Ratio",
+#        y = "Count",
+#        x = "Elementary Student Teacher Ratio") +
+#   theme_bw()
+# 
+# # grid.arrange(plot1, plot2, ncol=1)
+# plt2 <- ggplotly(plt2)
 ```
 
 
@@ -630,25 +630,25 @@ plot1 <- dat1 |>
 #   scale_fill_brewer(palette = "Paired") +
 #   theme_bw() +
 #   coord_flip()
-
-# grid.arrange(plot1, plot2, ncol=2)
+# 
+# # grid.arrange(plot1, plot2, ncol=2)
 # plt3 <- ggplotly(plt3)
 ```
 
 
 
 ```{r, warning=FALSE, message=FALSE, echo = FALSE}
-plt2 <- dat1 |>
-  filter(`Start Year` == 2018) |>
-  ggplot(aes(x = `Elementary Student Teacher Ratio`, y = `Grade 6 EQAO Reading Results`)) +
-  geom_point() +
-  geom_smooth(method=lm, se=FALSE, color = "blue") +
-  theme_minimal() +
-  labs(title = "Figure 6 - A scatterplot between elementary Student Teacher Ratio \nand grade 6 EQAO Reading Results for year 2018",
-       x = "Elementary Student Teacher Ratio",
-       y = "Grade 6 EQAO Reading Results")
-
-plt2 <- ggplotly(plt2)
+# plt2 <- dat1 |>
+#   filter(`Start Year` == 2018) |>
+#   ggplot(aes(x = `Elementary Student Teacher Ratio`, y = `Grade 6 EQAO Reading Results`)) +
+#   geom_point() +
+#   geom_smooth(method=lm, se=FALSE, color = "blue") +
+#   theme_minimal() +
+#   labs(title = "Figure 6 - A scatterplot between elementary Student Teacher Ratio \nand grade 6 EQAO Reading Results for year 2018",
+#        x = "Elementary Student Teacher Ratio",
+#        y = "Grade 6 EQAO Reading Results")
+# 
+# plt2 <- ggplotly(plt2)
 
 ```
 
