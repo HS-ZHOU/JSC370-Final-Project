@@ -1,8 +1,8 @@
-name: "JSC370 A5(Final Project)"
+name: "JSC370 Final Project"
 navbar:
-  title: "JSC370 A5"
+  title: "JSC370 Final Project"
   left:
     - text: "Home"
       href: index.html
-    - text: "Lab 12 Page"
-      href: lab12.html
+    - text: "Methods & Results"
+      href: methods_results.html

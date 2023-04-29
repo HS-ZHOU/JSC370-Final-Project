@@ -7,28 +7,6 @@ output:
         toc_float: TRUE
 ---
 
-## Project Description
-
-Education is one of the fundamental building blocks of any society and plays a vital role in shaping the future of individuals, communities, and nations. Among all years in school, k-12 education has the most significant influence on students because their personality and vision of the world are primarily shaped in elementary and secondary schools. Factors such as the school's suspension rate, drop rate, number of students, full-time educators, and geographic locations can partially reflect a school's academic performance. For example, suspension rates in primary and secondary schools are of concern as they are associated with adverse outcomes such as reduced academic performance, increased dropout rates, and a higher likelihood of involvement in delinquent behavior. On the other hand, other factors like the teacher-student ratio can suggest how many school resources and attention teachers each student can get. Thus a smaller ratio might imply a higher academic performance of a school board. Hence, from these factors, we can analyze their impacts on a school's academic performance, and understanding the relationship between them is crucial for policymakers, educators, and stakeholders in designing effective strategies to improve educational outcomes.
-
-With this in mind, I want to investigate the following question: What factors of a school will influence their academic performance and their relationships? To be more specific, what are the relationships between each school board's academic performance and their suspension rate, drop rate, number of students, number of full-time educators, and geographic locations?
-
-The data I obtained to answer the questions is from 
-[Ontario public data website](https://www.ontario.ca/page/government-ontario) and 
-[Open Canada](https://www.canada.ca/en.html) searching with keyword _school board_. The datasets contain information about all public schools, including elementary and secondary schools, in Ontario. All datasets I can find are from 2015 to 2019, so I will also limit my scope to this range.
-
-
-## Research Question
-
-What factors of a school will influence their academic performance and their relationships? To be more specific, what are the relationships between each school board's academic performance and their suspension rate, drop rate, number of students, number of full-time educators, and geographic locations?
-
-## Access the Project
-
-To view the complete pdf report, [click here]().
-
-To watch a demonstration of this website, [click here]().
-
-
 ```{r load-data, echo=FALSE, include=FALSE}
 library(data.table)
 library(tidyverse)
@@ -44,6 +22,7 @@ library(readxl)
 library(patchwork)
 library(gridExtra)
 library(stringr)
+library(leaflet)
 
 opts_chunk$set(
   warning = FALSE,
@@ -69,19 +48,6 @@ academic15 <- academic15 |>
 academic15 <- academic15 |> 
   mutate('Start Year' = 2015)
 
-# academic <- academic |>
-#   select(-c("Progress in Four Year Graduation Rate", 
-#             "Five Year Graduation Rate", 
-#             "Four Year Graduation Rate", 
-#             "Progress in Five Year Graduation Rate", 
-#             "Progress in Primary Class Size with 20 Students or less", 
-#             "Primary Class Size with 20 Students or less", 
-#             "Progress in Credit Accumulation by the end of Grade 10", 
-#             "Progress in Credit Accumulation by the end of Grade 11",
-#             "Credit Accumulation by the end of Grade 10", 
-#             "Credit Accumulation by the end of Grade 11", 
-#             "Progress in Grade 6 EQAO Reading Results", 
-#             "Progress in Grade 10 OSSLT Results"))
 
 ### 16
 academic16 <- read_excel("academic16.xlsx")
@@ -598,7 +564,7 @@ dat2 <- dat2 |>
   rename("Board Name" = `Board Name.x`,
          "Start Year" = `Start Year.x`)
 
-dat2 <- dat2 |> select(-c("Secondary Male Educators", "Secondary Female Educators", "Total Male Educators", "Total Female Educators", "Total Educators"))
+dat2 <- dat2 |> select(-c("Elementary Male Educators", "Elementary Female Educators", "Total Male Educators", "Total Female Educators", "Total Educators"))
 
 
 dat2 <- merge(
@@ -620,7 +586,7 @@ dat2 <- dat2 |>
   rename("Board Name" = `Board Name.x`,
          "Start Year" = `Start Year.x`)
 
-dat2 <- dat2 |> select(-c("Secondary Male Enrolment", "Secondary Female Enrolment", "Total Male Enrolment", "Total Female Enrolment"))
+dat2 <- dat2 |> select(-c("Elementary Male Enrolment", "Elementary Female Enrolment", "Total Male Enrolment", "Total Female Enrolment"))
 
 
 dat2 <- merge(
@@ -685,57 +651,52 @@ dat2 <- dat2 |>
 ```
 
 
+```{r}
+dat1$`Elementary Male Educators` <- as.numeric(dat1$`Elementary Male Educators`)
+dat1$`Elementary Male Enrolment` <- as.numeric(dat1$`Elementary Male Enrolment`)
+dat1$`Elementary Female Enrolment` <- as.numeric(dat1$`Elementary Female Enrolment`)
+dat1 <- na.omit(dat1)
+
+dat2$`Secondary Male Educators` <- as.numeric(dat2$`Secondary Male Educators`)
+dat2$`Secondary Female Educators` <- as.numeric(dat2$`Secondary Female Educators`)
+dat2$`Secondary Male Enrolment` <- as.numeric(dat2$`Secondary Male Enrolment`)
+dat2$`Secondary Female Enrolment` <- as.numeric(dat2$`Secondary Female Enrolment`)
+dat2 <- na.omit(dat2)
+```
 
 
 
 ```{r, include=FALSE, echo=FALSE}
-# dat1 <- na.omit(dat1)
-# 
-# # create new variable student teacher ratio
-# 
-# dat1$`Elementary Male Enrolment` <- as.numeric(dat1$`Elementary Male Enrolment`)
-# dat1$`Elementary Female Enrolment` <- as.numeric(dat1$`Elementary Female Enrolment`)
-# 
-# dat1$`Elementary Male Educators` <- as.numeric(dat1$`Elementary Male Educators`)
-# dat1$`Elementary Female Educators` <- as.numeric(dat1$`Elementary Female Educators`)
-# 
-# dat1$`Secondary Male Enrolment` <- as.numeric(dat1$`Secondary Male Enrolment`)
-# dat1$`Secondary Female Enrolment` <- as.numeric(dat1$`Secondary Female Enrolment`)
-# 
-# dat1$`Secondary Male Educators` <- as.numeric(dat1$`Secondary Male Educators`)
-# dat1$`Secondary Female Educators` <- as.numeric(dat1$`Secondary Female Educators`)
-# 
-# sum(is.na(dat1))
-# dat1 <- na.omit(dat1)
-# 
-# dat1 <- dat1 |>
-#   mutate("Elementary Student Teacher Ratio" = (`Elementary Male Enrolment` + `Elementary Female Enrolment`) /
-#            (`Elementary Male Educators` + `Elementary Female Educators`),
-#          "Secondary Student Teacher Ratio" = (`Secondary Male Enrolment` + `Secondary Female Enrolment`) /
-#            (`Secondary Male Educators` + `Secondary Female Educators`)
-#            ) 
-# 
-# str(dat1)
+# create new variable student teacher ratio
+
+
+dat1 <- dat1 |>
+  mutate("Elementary Student Teacher Ratio" = (`Elementary Male Enrolment` + `Elementary Female Enrolment`) /
+           (`Elementary Male Educators` + `Elementary Female Educators`))
+
+dat2 <- dat2 |> 
+  mutate("Secondary Student Teacher Ratio" = (`Secondary Male Enrolment` + `Secondary Female Enrolment`) / 
+           (`Secondary Male Educators` + `Secondary Female Educators`))
 ```
 
 
 
 ```{r, echo=FALSE}
-# datatable(
-#   head(dat1, 5), 
-#   options = list(
-#     scrollX = TRUE, 
-#     scrollY = FALSE,
-#     paging = FALSE,
-#     dom = 't'
-#   ),
-#   rownames = FALSE,
-#   caption = "Table 1 - First 5 rows of the final merged dataset"
-# ) |>
-# formatStyle(
-#   columns = 1:34,
-#   border = "0.5px solid black"
-# )
+datatable(
+  head(dat1, 5),
+  options = list(
+    scrollX = TRUE,
+    scrollY = FALSE,
+    paging = FALSE,
+    dom = 't'
+  ),
+  rownames = FALSE,
+  caption = "Table 1 - First 5 rows of the final merged dataset"
+) |>
+formatStyle(
+  columns = 1:34,
+  border = "0.5px solid black"
+)
 
 ```
 
@@ -769,45 +730,53 @@ dat2 <- dat2 |>
 
 
 ```{r, echo = FALSE, echo=FALSE}
-# plt3 <- dat1 |>
-#   filter(`Start Year` == 2018) |>
-#   ggplot() +
-#   geom_bar(aes(x = `School Region`, fill = `School Region`)) +
-#   labs(title = "Figure 1 - A barplot of the number of schools in each region",
-#        y = "Count",
-#        x = "School Region") +
-#   coord_flip() +
-#   theme_bw()
-# 
+dat1 |>
+  filter(`Start Year` == 2018) |>
+  ggplot() +
+  geom_bar(aes(x = `Geo-Region`, fill = `Geo-Region`)) +
+  labs(title = "Figure 1 - A barplot of the number of schools in each region",
+       y = "Count",
+       x = "School Region") +
+  coord_flip() +
+  theme_bw()
+
 # plt3 <- ggplotly(plt3)
 ```
 
 
 ```{r, echo = FALSE, warning=FALSE, echo=FALSE}
-# dat1$`Start Year` <- as.factor(dat1$`Start Year`)
-# 
-# plt2 <- dat1 |>
-#   filter(`Start Year` == 2018) |>
-#   ggplot() +
-#   geom_histogram(aes(x = `Secondary Student Teacher Ratio`), fill = "orange", color = "black", bins=30) +
-#   labs(title = "Figure 2 - A histogram of the Secondary Student-Teacher Ratio",
-#        y = "Count",
-#        x = "Secondary Student Teacher Ratio") +
-#   theme_bw()
-# plt2 <- ggplotly(plt2)
+dat1$`Start Year` <- as.factor(dat1$`Start Year`)
+
+dat1 |>
+  filter(`Start Year` == 2018) |>
+  ggplot() +
+  geom_histogram(aes(x = `Elementary Student Teacher Ratio`), fill = "orange", color = "black", bins=30) +
+  labs(title = "Figure 2 - A histogram of the Secondary Student-Teacher Ratio",
+       y = "Count",
+       x = "Secondary Student Teacher Ratio") +
+  theme_bw()
 ```
 
 ```{r, echo=FALSE, warning=FALSE, echo=FALSE}
-# plot2 <- dat1 |>
-#   filter(`Start Year` == 2018) |>
-#   ggplot() +
-#   geom_histogram(aes(x = `Elementary Student Teacher Ratio`), fill = "orange", color = "black", bins=30) +
-#   labs(title = "Figure 3 - A histogram of the Elementary Student-Teacher Ratio",
-#        y = "Count",
-#        x = "Elementary Student Teacher Ratio") +
-#   theme_bw()
-# 
-# # grid.arrange(plot1, plot2, ncol=1)
+dat1 |>
+  filter(`Start Year` == 2018) |>
+  ggplot() +
+  geom_histogram(aes(x = `Elementary Student Teacher Ratio`), fill = "orange", color = "black", bins=30) +
+  labs(title = "Figure 3 - A histogram of the Elementary Student-Teacher Ratio",
+       y = "Count",
+       x = "Elementary Student Teacher Ratio") +
+  theme_bw()
+
+dat2 |>
+  filter(`Start Year` == 2018) |>
+  ggplot() +
+  geom_histogram(aes(x = `Secondary Student Teacher Ratio`), fill = "orange", color = "black", bins=30) +
+  labs(title = "Figure 3 - A histogram of the Elementary Student-Teacher Ratio",
+       y = "Count",
+       x = "Elementary Student Teacher Ratio") +
+  theme_bw()
+
+# grid.arrange(plot1, plot2, ncol=1)
 # plt2 <- ggplotly(plt2)
 ```
 
@@ -815,15 +784,24 @@ dat2 <- dat2 |>
 ```{r, echo=FALSE}
 
 # dat1$`Grade 10 OSSLT Results` <- as.numeric(dat1$`Grade 10 OSSLT Results`)
-# 
-# plot1 <- dat1 |>
-#   ggplot() +
-#   geom_boxplot(aes(x = `Grade 10 OSSLT Results`), fill="gray", color = "black") +
-#   labs(title = "Figure 4 - A boxplot for \nthe Grade 10 OSSLT Results",
-#        x = "Grade 10 OSSLT Results") +
-#   scale_fill_brewer(palette = "Paired") +
-#   theme_bw() +
-#   coord_flip()
+
+dat1 |>
+  ggplot() +
+  geom_boxplot(aes(x = `Percentage of Grade 6 Students Achieving the Provincial Standard in Reading`, fill=`Geo-Region`), color = "black") +
+  labs(title = "Figure 4 - A boxplot for \nthe Grade 10 OSSLT Results",
+       x = "Grade 10 OSSLT Results") +
+  scale_fill_brewer(palette = "Paired") +
+  theme_bw() +
+  coord_flip()
+
+dat2 |>
+  ggplot() +
+  geom_boxplot(aes(x = `Percentage of Students That Passed the Grade 10 OSSLT on Their First Attempt`, fill=`Geo-Region`), color = "black") +
+  labs(title = "Figure 4 - A boxplot for \nthe Grade 10 OSSLT Results",
+       x = "Grade 10 OSSLT Results") +
+  scale_fill_brewer(palette = "Paired") +
+  theme_bw() +
+  coord_flip()
 
 # plt3 <- dat1 |>
 #   ggplot() +
@@ -836,6 +814,14 @@ dat2 <- dat2 |>
 # 
 # # grid.arrange(plot1, plot2, ncol=2)
 # plt3 <- ggplotly(plt3)
+
+dat1 |> 
+  ggplot() +
+  geom_point(aes(x=`Start Year`, y = `Percentage of Grade 6 Students Achieving the Provincial Standard in Reading`, fill = `Geo-Region`))
+
+dat1 |> group_by(`Geo-Region`, `Start Year`) |> summarize(mean = mean(`Percentage of Grade 6 Students Achieving the Provincial Standard in Reading`)) |> ggplot() + geom_point(aes(x=`Start Year`, y=mean, color = `Geo-Region`)) + geom_line(aes(x=`Start Year`, y = `mean`, color = `Geo-Region`, group = `Geo-Region`)) + theme_bw()
+
+dat2 |> group_by(`Geo-Region`, `Start Year`) |> summarize(mean = mean(`Percentage of Students That Passed the Grade 10 OSSLT on Their First Attempt`)) |> ggplot() + geom_point(aes(x=`Start Year`, y=mean, color = `Geo-Region`)) + geom_line(aes(x=`Start Year`, y = `mean`, color = `Geo-Region`, group = `Geo-Region`)) + theme_bw()
 ```
 
 
@@ -911,5 +897,42 @@ dat2 <- dat2 |>
 
 ```
 
+```{r}
+# stations_map <- leaflet() |>
+#   addProviderTiles("CartoDB.Positron") |>
+#   addCircles(
+#     data = dat1,
+#     lat = ~Latitude, lng = ~Longitude, popup = "Geospatial mid",
+#     opacity = 1, fillOpacity = 1, radius = 20, color = "darkgreen")
+#   # ) |>
+#   # addLegend(
+#   #   colors = c("darkgreen", "purple"),
+#   #   labels = c("Geospatially middle stations", "Climate representative stations")
+#   # )
+# 
+# # mapview::mapshot(stations_map, file = "mapview.png")
+# stations_map
+```
 
 
+
+## Showcasing plots {.tabset}
+
+### Figure 1
+
+```{r echo=FALSE}
+# plt1
+```
+
+### Figure 2
+
+```{r echo=FALSE}
+# plt2
+```
+
+### Figure 3
+```{r echo=FALSE}
+# plt3
+```
+
+{-}
