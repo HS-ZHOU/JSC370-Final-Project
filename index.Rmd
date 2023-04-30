@@ -24,7 +24,7 @@ What factors of a school will influence their academic performance and their rel
 
 ## Access the Project
 
-To view the complete pdf report, [click here]().
+To view the complete pdf report, [click here](https://github.com/HS-ZHOU/JSC370-Final-Project/raw/master/Report.pdf).
 
 To watch a demonstration of this website, [click here]().
 
