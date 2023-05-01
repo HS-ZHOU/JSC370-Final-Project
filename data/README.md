@@ -1,1 +1,1 @@
-My JSC370 Final Project Website. The website is online at https://hs-zhou.github.io/JSC370-Final-Project/.
+These files are the data used for the analysis, which are acquired from the website mentioned in the project description.
