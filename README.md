@@ -11,3 +11,5 @@ The data I obtained to answer the questions is from
 [Open Canada](https://www.canada.ca/en.html) searching with keyword _school board_. The datasets contain information about all public schools, including elementary and secondary schools, in Ontario. All datasets I can find are from 2015 to 2019, so I will also limit my scope to this range.
 
 **The website is online at https://hs-zhou.github.io/JSC370-Final-Project/**.
+
+**Link to the presentation: https://drive.google.com/file/d/1lSkVwg6WzUNS1eZypTwYAUK4QVHrx8t2/view?usp=sharing**.
